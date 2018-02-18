@@ -22,16 +22,6 @@ Done
 The Code Metrics tool in Visual Studio 2015 uses CC1. This is a fact because booleans do not increase the cyclomatic complexity, 
 but every conditional (if/switch) does.
 
-###### Pros
-- Provides a graphical user interface.
-- Checks the triangle type, by comparing the length of the sides.
-- Checks whether the input is an 32-bit Integer.
-- The code is easily readable.
-
-###### Cons
-- Doesn't check if the sides can actually form a triangle.
-- Calculation logic is not seperated from the Main class.
-
 #### Coding Standard Document
 - Follow a specific code style
 - Consistent indentation
