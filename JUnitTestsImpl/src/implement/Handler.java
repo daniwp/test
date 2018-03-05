@@ -2,22 +2,12 @@ package implement;
 
 import entities.Person;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class Handler implements IHandler {
-
-    public List<Person> persons;
-
-    public Handler(String path) {
-        persons = getAllPersons(path);
-    }
 
     @Override
     public ArrayList<Person> getAllPersons(String path) {
@@ -41,7 +31,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsByName(String name) {
+    public List<Person> getPersonsByName(List<Person> persons, String name) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {
@@ -54,16 +44,16 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> sortPersonsByName() {
+    public List<Person> sortPersonsByName(List<Person> persons) {
         List<Person> array = persons;
 
-        array.sort(Comparator.comparing(Person::getFirstname));
+        array.sort(Comparator.comparing((Person p )-> p.getFirstname() + p.getLastname()));
 
         return array;
     }
 
     @Override
-    public List<Person> sortPersonsByAge() {
+    public List<Person> sortPersonsByAge(List<Person> persons) {
         List<Person> array = persons;
 
         array.sort(Comparator.comparing(Person::getAge));
@@ -72,7 +62,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsWithPet(String pet) {
+    public List<Person> getPersonsWithPet(List<Person> persons, String pet) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {
@@ -87,7 +77,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsWithFavoritePet(String pet) {
+    public List<Person> getPersonsWithFavoritePet(List<Person> persons, String pet) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {
@@ -100,7 +90,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsWithChild(String child) {
+    public List<Person> getPersonsWithChild(List<Person> persons, String child) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {
@@ -115,7 +105,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsWithFavoriteChild(String child) {
+    public List<Person> getPersonsWithFavoriteChild(List<Person> persons, String child) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {
@@ -128,7 +118,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsWithoutPets() {
+    public List<Person> getPersonsWithoutPets(List<Person> persons) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {
@@ -141,7 +131,7 @@ public class Handler implements IHandler {
     }
 
     @Override
-    public List<Person> getPersonsWithoutChildren() {
+    public List<Person> getPersonsWithoutChildren(List<Person> persons) {
         List<Person> array = new ArrayList<>();
 
         for (Person person : persons) {

@@ -41,6 +41,8 @@ public class Person {
         return favoritePet;
     }
 
+    public String getLastname() { return lastname; }
+
     public void setFavoritePet(String favoritePet) {
         for (String pet : pets) {
             if (pet.equals(favoritePet)) {
@@ -69,5 +71,10 @@ public class Person {
 
     public List<String> getChildren() {
         return children;
+    }
+
+    @Override
+    public String toString() {
+        return firstname + " " + lastname + " " + age;
     }
 }

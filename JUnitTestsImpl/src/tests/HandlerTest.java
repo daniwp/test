@@ -4,6 +4,7 @@ package tests;
 import entities.Person;
 import implement.Handler;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,22 @@ class HandlerTest {
 
     private Handler handler;
     private List<Person> personsUnsorted = new ArrayList<>();
+    private String path = System.getProperty("user.dir") + "/src/tests/convertcsvtest.csv";
 
     @BeforeEach
     void testInit() {
-        String path = System.getProperty("user.dir") + "/src/tests/convertcsvtest.csv";
-        handler = new Handler(path);
-        personsUnsorted = handler.persons;
+        handler = new Handler();
+        personsUnsorted.add(new Person("Bettie", "Dawson",35));
+        personsUnsorted.add(new Person("Hans", "Jørgensen",32));
+        personsUnsorted.add(new Person("Lettie", "Bowers",35));
+        personsUnsorted.add(new Person("Hans", "Hansen",22));
+        personsUnsorted.add(new Person("Walter", "Pearson",36));
+        personsUnsorted.add(new Person("Hans", "Larsen",52));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsByName() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -31,32 +38,38 @@ class HandlerTest {
         expected.add(new Person("Hans", "Hansen", 22));
         expected.add(new Person("Hans", "Larsen", 52));
 
-        actual = handler.getPersonsByName("Hans");
+        // Act
+        actual = handler.getPersonsByName(personsUnsorted,"Hans");
 
+        // Assert
         assertAll("Persons with name = Hans",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 3);
                     assertAll("Specific person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname()),
-                            () -> assertEquals(expected.get(2).getFirstname(), actual.get(2).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString()),
+                            () -> assertEquals(expected.get(2).toString(), actual.get(2).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getAllPersons() {
+        // Arrange
         int expectedSize = 6;
         int actualSize;
 
-        actualSize = personsUnsorted.size();
+        // Act
+        actualSize = handler.getAllPersons(path).size();
 
+        // Assert
         assertEquals(expectedSize, actualSize);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void sortPersonsByName() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -67,25 +80,28 @@ class HandlerTest {
         expected.add(new Person("Lettie", "Bowers", 35));
         expected.add(new Person("Walter", "Pearson", 36));
 
-        actual = handler.sortPersonsByName();
+        // Act
+        actual = handler.sortPersonsByName(personsUnsorted);
 
+        // Assert
         assertAll("Persons sorted by name",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 6);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname()),
-                            () -> assertEquals(expected.get(2).getFirstname(), actual.get(2).getFirstname()),
-                            () -> assertEquals(expected.get(3).getFirstname(), actual.get(3).getFirstname()),
-                            () -> assertEquals(expected.get(4).getFirstname(), actual.get(4).getFirstname()),
-                            () -> assertEquals(expected.get(5).getFirstname(), actual.get(5).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString()),
+                            () -> assertEquals(expected.get(2).toString(), actual.get(2).toString()),
+                            () -> assertEquals(expected.get(3).toString(), actual.get(3).toString()),
+                            () -> assertEquals(expected.get(4).toString(), actual.get(4).toString()),
+                            () -> assertEquals(expected.get(5).toString(), actual.get(5).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void sortPersonsByAge() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -96,29 +112,32 @@ class HandlerTest {
         expected.add(new Person("Walter", "Pearson", 36));
         expected.add(new Person("Hans", "Larsen", 52));
 
-        actual = handler.sortPersonsByAge();
+        // Act
+        actual = handler.sortPersonsByAge(personsUnsorted);
 
+        // Assert
         assertAll("Persons sorted by age",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 6);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getAge(), actual.get(0).getAge()),
-                            () -> assertEquals(expected.get(1).getAge(), actual.get(1).getAge()),
-                            () -> assertEquals(expected.get(2).getAge(), actual.get(2).getAge()),
-                            () -> assertEquals(expected.get(3).getAge(), actual.get(3).getAge()),
-                            () -> assertEquals(expected.get(4).getAge(), actual.get(4).getAge()),
-                            () -> assertEquals(expected.get(5).getAge(), actual.get(5).getAge())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString()),
+                            () -> assertEquals(expected.get(2).toString(), actual.get(2).toString()),
+                            () -> assertEquals(expected.get(3).toString(), actual.get(3).toString()),
+                            () -> assertEquals(expected.get(4).toString(), actual.get(4).toString()),
+                            () -> assertEquals(expected.get(5).toString(), actual.get(5).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsWithPet() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
-        expected.add(new Person("Hans", "Hansen", 22));
+        expected.add(new Person("Hans", "Jørgensen", 32));
         expected.add(new Person("Lettie", "Bowers", 35));
 
         personsUnsorted.get(1).addPet("Cat");
@@ -127,25 +146,28 @@ class HandlerTest {
         personsUnsorted.get(3).addPet("Lizard");
         personsUnsorted.get(4).addPet("Dog");
 
-        actual = handler.getPersonsWithPet("Cat");
+        // Act
+        actual = handler.getPersonsWithPet(personsUnsorted,"Cat");
 
+        // Assert
         assertAll("Persons with pet = Cat",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 2);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsWithFavoritePet() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
-        expected.add(new Person("Hans", "Hansen", 22));
+        expected.add(new Person("Hans", "Jørgensen", 32));
         expected.add(new Person("Walter", "Pearson", 36));
 
         personsUnsorted.get(1).addPet("Dog");
@@ -157,21 +179,24 @@ class HandlerTest {
         personsUnsorted.get(4).addPet("Dog");
         personsUnsorted.get(4).setFavoritePet("Dog");
 
-        actual = handler.getPersonsWithFavoritePet("Dog");
+        // Act
+        actual = handler.getPersonsWithFavoritePet(personsUnsorted,"Dog");
 
+        // Assert
         assertAll("Persons with favorite pet = Dog",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 2);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsWithChild() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -185,22 +210,25 @@ class HandlerTest {
         personsUnsorted.get(3).addChild("Emil");
         personsUnsorted.get(4).addChild("Tine");
 
-        actual = handler.getPersonsWithChild("Tine");
+        // Act
+        actual = handler.getPersonsWithChild(personsUnsorted,"Tine");
 
+        // Assert
         assertAll("Persons with child named Tine",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 3);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsWithFavoriteChild() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -218,21 +246,24 @@ class HandlerTest {
         personsUnsorted.get(4).addChild("Anders");
         personsUnsorted.get(4).setFavoriteChild("Anders");
 
-        actual = handler.getPersonsWithFavoriteChild("Anders");
+        // Act
+        actual = handler.getPersonsWithFavoriteChild(personsUnsorted,"Anders");
 
+        // Assert
         assertAll("Persons with favorite child named Anders",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 2);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsWithoutPets() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -245,21 +276,24 @@ class HandlerTest {
         personsUnsorted.get(3).addPet("Lizard");
         personsUnsorted.get(4).addPet("Dog");
 
-        actual = handler.getPersonsWithoutPets();
+        // Act
+        actual = handler.getPersonsWithoutPets(personsUnsorted);
 
+        // Assert
         assertAll("Persons without pets",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 2);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString())
                     );
                 });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPersonsWithoutChildren() {
+        // Arrange
         List<Person> expected = new ArrayList<>();
         List<Person> actual;
 
@@ -272,15 +306,17 @@ class HandlerTest {
         personsUnsorted.get(3).addChild("Stine");
         personsUnsorted.get(4).addChild("Frederik");
 
-        actual = handler.getPersonsWithoutChildren();
+        // Act
+        actual = handler.getPersonsWithoutChildren(personsUnsorted);
 
+        // Assert
         assertAll("Persons without children",
                 () -> {
                     assertNotNull(actual);
                     assertTrue(actual.size() == 2);
                     assertAll("Person",
-                            () -> assertEquals(expected.get(0).getFirstname(), actual.get(0).getFirstname()),
-                            () -> assertEquals(expected.get(1).getFirstname(), actual.get(1).getFirstname())
+                            () -> assertEquals(expected.get(0).toString(), actual.get(0).toString()),
+                            () -> assertEquals(expected.get(1).toString(), actual.get(1).toString())
                     );
                 });
     }
